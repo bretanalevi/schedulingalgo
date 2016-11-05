@@ -108,10 +108,10 @@ int main()
 
 			}
 
-
+			//calculate turnaround time
 			for (i1 = 0;i1<n1;i1++)
 			{
-				tat1[i1] = bt1[i1] + wt1[i1];
+				tat1[i1] = (bt1[i1] + st1[i1])-at1[i1];
 				avg_wt1 += wt1[i1];
 				avg_tat1 += tat1[i1];
 
@@ -366,29 +366,54 @@ int main()
 		case 3:
 			system("cls");
 			cout << "PRIORITY SCHEDULING ALGORITHM ( NON-PREEMPTIVE)\n\n";
-			cout << "Enter Total Number of Process : ";
-			cin >> n3;
+			cout << "Enter 4 Process ";
+			//cin >> n3;
 
-			cout << "\nEnter Burst Time and Priority\n";
+			n3 = 4;
+			cout << endl;
+			
 			for (i3 = 0;i3<n3;i3++)
 			{
 				cout << "\nProcess " << i3 + 1 << "\n";
-				cout << "Enter Arrival Time : ";
+				cout << "Arrival Time : ";
 				cin >> at3[i3];
-				cout << "Enter Burst Time : ";
+				cout << "Burst Time : ";
 				cin >> bt3[i3];
-				cout << "Enter Priority : ";
+				cout << "Priority : ";
 				cin >> pr3[i3];
-				p3[i3] = i3 + 1;           //contains process number
+				p3[i3] = i3;           //contains process number
 			}
+			
+			
 
-			//sorting burst time, priority and process number in ascending order using selection sort
-			for (i3 = 0;i3<n3;i3++)
+			
+
+			
+
+			for (i3 = 0;i3<n3;i3++)    // GETTING THE SHORTEST ARRIVAL TIME USING SELECTION SORT
 			{
 				pos3 = i3;
 				for (j3 = i3 + 1;j3<n3;j3++)
 				{
-					if (pr3[j3]<pr3[pos3])
+					if (at3[pos3]>at3[j3])
+						pos3 = j3;
+				}
+
+				temp3 = at3[i3];
+				at3[i3] = at3[pos3];
+				at3[pos3] = temp3;
+
+			}
+
+			at3[0] = lat3;
+
+			
+			for (i3 = 0;i3<n3;i3++)   //SORTING PRIORITY
+			{
+				pos3 = i3;
+				for (j3 = i3 + 1;j3<n3;j3++)
+				{
+					if (pr3[pos3]<pr3[j3])
 						pos3 = j3;
 				}
 
@@ -408,37 +433,66 @@ int main()
 				at3[i3] = at3[pos3];
 				at3[pos3] = temp3;
 
+				temp3 = st3[i3];
+				st3[i3] = st3[pos3];
+				st3[pos3] = temp3;
+
 			}
 
-			wt3[0] = at3[0];            //waiting time for first process is zero
-			st3[0] = at3[0];
-			//calculate waiting time
-			for (i3 = 1;i3<n3;i3++)
-			{
-				for (j3 = 0;j3<i3;j3++)
-				{
+			
+			st3[0] = lat3;
+			wt3[0] = 0;
 
+			//calculate waiting time
+			for (i3 = 1;i3<n3+1;i3++)
+			{
 					st3[i3] = st3[i3 - 1] + bt3[i3 - 1];
 					wt3[i3] = st3[i3] - at3[i3];
-				}
-
 			}
 
+			//calculate turnaround time
 			for (i3 = 0;i3<n3;i3++)
 			{
-				tat3[i3] = bt3[i3] + wt3[i3];
+				tat3[i3] = (bt3[i3] + st3[i3])-at3[i3];
 				avg_wt3 += wt3[i3];
 				avg_tat3 += tat3[i3];
 
 			}
 
+			cout << endl << endl;
 
-			for (i3 = 1;i3<n3;i3++)
+			for(i3=0;i3<n3;i3++)    // SHOWING GANT CHART
+			{
+				cout << "-------";
+			}
+			
+			cout << endl;
+			cout << "|";
+			for(i3=0;i3<n3;i3++)
+			{
+				cout << "  P" << p3[i3] << "  |";
+			}
+
+			cout << endl;
+			for(i3=0;i3<n3;i3++)
+			{
+				cout << "-------";
+			}
+			cout << endl;
+			cout << lat3 ;
+			for(i3=1;i3<n3+1;i3++)
+			{
+				cout << "      " << st3[i3];
+			}
+			
+			cout << endl;
+
+			for (i3 = 0;i3<n3;i3++)   //SORTING PRIORITY
 			{
 				pos3 = i3;
 				for (j3 = i3 + 1;j3<n3;j3++)
 				{
-					if (p3[j3]<p3[pos3])
+					if (pr3[pos3]>pr3[j3])
 						pos3 = j3;
 				}
 
@@ -457,6 +511,10 @@ int main()
 				temp3 = at3[i3];
 				at3[i3] = at3[pos3];
 				at3[pos3] = temp3;
+
+				temp3 = st3[i3];
+				st3[i3] = st3[pos3];
+				st3[pos3] = temp3;
 
 				temp3 = wt3[i3];
 				wt3[i3] = wt3[pos3];
@@ -467,6 +525,9 @@ int main()
 				tat3[pos3] = temp3;
 
 			}
+
+
+			
 
 
 			//average waiting time
