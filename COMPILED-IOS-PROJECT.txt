@@ -1,0 +1,428 @@
+#include<iostream>
+
+using namespace std;
+
+
+int main()
+{
+	int menu1 = 0; // menu
+	do {
+
+		int n1, bt1[20], at1[20], wt1[20], st1[20], tat1[20], i1, j1;
+		double avwt1 = 0, avtat1 = 0;
+
+		int bt2[20], at2[20], lat2=0,p2[20], st2[20], wt2[20], tat2[20], i2, j2, n2, total2 = 0, pos2, temp2;
+		double avg_wt2=0, avg_tat2=0;
+
+		int bt3[20], p3[20], st3[20], at3[20], wt3[20], tat3[20], pr3[20], i3, j3, n3, total3 = 0, pos3, temp3;
+		double avg_wt3 = 0, avg_tat3 = 0;
+
+		int count4, j4, n4, time4, remain4, flag4 = 0, time_quantum4;
+		int wait_time4 = 0, turnaround_time4 = 0, at4[10], bt4[10], rt4[10];
+		system("cls");
+		cout << "\n\nSCHEDULING ALGORITHM\n\n";
+		cout << " [1]First Come First Served\n";
+		cout << " [2]Shortest Job First\n";
+		cout << " [3]Priority Scheduling\n";
+		cout << " [4]Round Robin Scheduling\n";
+		cout << " [5]Exit\n\n";
+
+		cout << " Enter Choice : ";
+		cin >> menu1;
+
+		switch (menu1) {
+		case 1:
+			system("cls");
+			cout << "FIRST COME FIRST SERVE SCHEDULING ALGORITHM\n\n";
+			cout << "Enter Total Number of Processes: ";
+			cin >> n1;
+
+			for (i1 = 0;i1 < n1;i1++)
+			{
+				cout << "\nProcess " << i1 + 1;
+				cout << "\nEnter Arrival Time: ";
+				cin >> at1[i1];
+				cout << "Enter Burst Time: ";
+				cin >> bt1[i1];
+			}
+
+			//waiting time for first process is 0
+
+			//calculating waiting time
+
+			st1[0] = at1[0];
+			wt1[0] = 0;
+			for (i1 = 1;i1 < n1;i1++)
+			{
+				st1[i1] = st1[i1 - 1] + bt1[i1 - 1];
+				wt1[i1] = st1[i1] - at1[i1];
+
+			}
+
+			cout << "\n================================================";
+			cout << "\nProcess\t    Waiting Time  Turnaround Time";
+
+			//calculating turnaround time
+			for (i1 = 0;i1 < n1;i1++)
+			{
+				tat1[i1] = bt1[i1] + wt1[i1];
+				avwt1 += wt1[i1];
+				avtat1 += tat1[i1];
+				cout << "\nP" << i1 + 1 << "\t\t" << wt1[i1] << "\t\t" << tat1[i1];
+			}
+
+			avwt1 /= i1;
+			avtat1 /= i1;
+			cout << "\n\nAverage Waiting Time: " << avwt1;
+			cout << "\nAverage Turnaround Time: " << avtat1;
+			system("pause >0");
+			break;
+
+
+		case 2:
+			system("cls");
+			cout << "SHORTEST JOB FIRST SCHEDULING ALGORITHM\n\n";
+			cout << "Enter Number of 4 Process: ";
+			n2 = 4;
+			cout << endl;
+			for (i2 = 0;i2<n2;i2++)
+			{
+				cout << "\nProcess " << i2 + 1;
+				cout << "\nArrival Time: ";
+				cin >> at2[i2];
+				cout << "Burst Time: ";
+				cin >> bt2[i2];
+				p2[i2] = i2;           //contains process number
+			}
+
+			for (i2 = 0;i2<n2;i2++)
+			{
+				pos2 = i2;
+				for (j2 = i2 + 1;j2<n2;j2++)
+				{
+					if (at2[pos2]>at2[j2])
+						pos2 = j2;
+				}
+
+				temp2 = at2[i2];
+				at2[i2] = at2[pos2];
+				at2[pos2] = temp2;
+
+			}
+
+			at2[0] = lat2;
+			
+			for (i2 = 0;i2<n2;i2++)  // SORTING ARRIVAL , BURST USING SELECTION SORT
+			{
+				pos2 = i2;
+				for (j2 = i2 + 1;j2<n2;j2++)
+				{
+					if (bt2[pos2]>bt2[j2])
+						pos2 = j2;
+				}
+
+				temp2 = bt2[i2];
+				bt2[i2] = bt2[pos2];
+				bt2[pos2] = temp2;
+
+				temp2 = p2[i2];
+				p2[i2] = p2[pos2];
+				p2[pos2] = temp2;
+
+				temp2 = at2[i2];
+				at2[i2] = at2[pos2];
+				at2[pos2] = temp2;
+
+				temp2 = st2[i2];
+				st2[i2] = st2[pos2];
+				st2[pos2] = temp2;
+
+			}
+			
+			wt2[0] = 0;            //waiting time for first process will be zero
+			st2[0] = lat2;
+			
+							   //calculate waiting time
+			for (i2 = 1;i2 < n2+1;i2++)
+			{
+					st2[i2] = st2[i2-1] + bt2[i2-1];
+					wt2[i2] = st2[i2] - at2[i2];
+			}
+
+			for (i2 = 0;i2<n2;i2++)
+			{
+				tat2[i2] = bt2[i2] + wt2[i2];
+				avg_wt2 += wt2[i2];
+				avg_tat2 += tat2[i2];
+
+			}
+
+			cout << endl << endl;
+
+			for(i2=0;i2<n2;i2++)    // SHOWING GANT CHART
+			{
+				cout << "-------";
+			}
+			
+			cout << endl;
+			cout << "|";
+			for(i2=0;i2<n2;i2++)
+			{
+				cout << "  P" << p2[i2] << "  |";
+			}
+
+			cout << endl;
+			for(i2=0;i2<n2;i2++)
+			{
+				cout << "-------";
+			}
+			cout << endl;
+			cout << lat2 ;
+			for(i2=1;i2<n2+1;i2++)
+			{
+				cout << "      " << st2[i2];
+			}
+			
+
+
+			cout << endl << endl;
+			for (i2 = 0;i2<n2;i2++) //SORT AGAIN WITH WAITING TIME AND TURNAROUND TIME
+			{
+				pos2 = i2;
+				for (j2 = i2 + 1;j2<n2;j2++)
+				{
+					if (p2[j2]<p2[pos2])
+						pos2 = j2;
+				}
+
+				temp2 = bt2[i2];
+				bt2[i2] = bt2[pos2];
+				bt2[pos2] = temp2;
+
+				temp2 = p2[i2];
+				p2[i2] = p2[pos2];
+				p2[pos2] = temp2;
+
+				temp2 = at2[i2];
+				at2[i2] = at2[pos2];
+				at2[pos2] = temp2;
+
+				temp2 = wt2[i2];
+				wt2[i2] = wt2[pos2];
+				wt2[pos2] = temp2;
+
+				temp2 = tat2[i2];
+				tat2[i2] = tat2[pos2];
+				tat2[pos2] = temp2;
+
+				temp2 = st2[i2];
+				st2[i2] = st2[pos2];
+				st2[pos2] = temp2;
+			}
+
+			
+
+			//average waiting time
+			total2 = 0;
+
+			
+
+			cout << "\nProcess\t    Arrival Time\t Burst Time \tWaiting Time\tTurnaround Time";
+			for (i2 = 0;i2<n2;i2++)
+			{
+				cout << "\nP[" << p2[i2] << "]\t\t  " << at2[i2] << "\t\t    " << bt2[i2] << "\t\t    " << wt2[i2] << "\t\t\t" << tat2[i2];
+			}
+
+			avg_wt2 /= i2;
+			avg_tat2 /= i2;     //average turnaround time
+			cout << "\n\nAverage Waiting Time = " << avg_wt2;
+			cout << "\nAverage Turnaround Time = " << avg_tat2;
+			system("pause>0");
+			break;
+
+
+		case 3:
+			system("cls");
+			cout << "PRIORITY SCHEDULING ALGORITHM ( NON-PREEMPTIVE)\n\n";
+			cout << "Enter Total Number of Process : ";
+			cin >> n3;
+
+			cout << "\nEnter Burst Time and Priority\n";
+			for (i3 = 0;i3<n3;i3++)
+			{
+				cout << "\nProcess " << i3 + 1 << "\n";
+				cout << "Enter Arrival Time : ";
+				cin >> at3[i3];
+				cout << "Enter Burst Time : ";
+				cin >> bt3[i3];
+				cout << "Enter Priority : ";
+				cin >> pr3[i3];
+				p3[i3] = i3 + 1;           //contains process number
+			}
+
+			//sorting burst time, priority and process number in ascending order using selection sort
+			for (i3 = 0;i3<n3;i3++)
+			{
+				pos3 = i3;
+				for (j3 = i3 + 1;j3<n3;j3++)
+				{
+					if (pr3[j3]<pr3[pos3])
+						pos3 = j3;
+				}
+
+				temp3 = pr3[i3];
+				pr3[i3] = pr3[pos3];
+				pr3[pos3] = temp3;
+
+				temp3 = bt3[i3];
+				bt3[i3] = bt3[pos3];
+				bt3[pos3] = temp3;
+
+				temp3 = p3[i3];
+				p3[i3] = p3[pos3];
+				p3[pos3] = temp3;
+
+				temp3 = at3[i3];
+				at3[i3] = at3[pos3];
+				at3[pos3] = temp3;
+
+			}
+
+			wt3[0] = at3[0];            //waiting time for first process is zero
+			st3[0] = at3[0];
+			//calculate waiting time
+			for (i3 = 1;i3<n3;i3++)
+			{
+				for (j3 = 0;j3<i3;j3++)
+				{
+
+					st3[i3] = st3[i3 - 1] + bt3[i3 - 1];
+					wt3[i3] = st3[i3] - at3[i3];
+				}
+
+			}
+
+			for (i3 = 0;i3<n3;i3++)
+			{
+				tat3[i3] = bt3[i3] + wt3[i3];
+				avg_wt3 += wt3[i3];
+				avg_tat3 += tat3[i3];
+
+			}
+
+
+			for (i3 = 1;i3<n3;i3++)
+			{
+				pos3 = i3;
+				for (j3 = i3 + 1;j3<n3;j3++)
+				{
+					if (p3[j3]<p3[pos3])
+						pos3 = j3;
+				}
+
+				temp3 = pr3[i3];
+				pr3[i3] = pr3[pos3];
+				pr3[pos3] = temp3;
+
+				temp3 = bt3[i3];
+				bt3[i3] = bt3[pos3];
+				bt3[pos3] = temp3;
+
+				temp3 = p3[i3];
+				p3[i3] = p3[pos3];
+				p3[pos3] = temp3;
+
+				temp3 = at3[i3];
+				at3[i3] = at3[pos3];
+				at3[pos3] = temp3;
+
+				temp3 = wt3[i3];
+				wt3[i3] = wt3[pos3];
+				wt3[pos3] = temp3;
+
+				temp3 = tat3[i3];
+				tat3[i3] = tat3[pos3];
+				tat3[pos3] = temp3;
+
+			}
+
+
+			//average waiting time
+			total3 = 0;
+
+
+
+			cout << "\nProcess\t    Burst Time    \tWaiting Time\tTurnaround Time";
+			for (i3 = 0;i3<n3;i3++)
+			{
+				cout << "\nP[" << p3[i3] << "]\t\t  " << bt3[i3] << "\t\t    " << wt3[i3] << "\t\t\t" << tat3[i3];
+			}
+
+			avg_wt3 /= i3;
+			avg_tat3 /= i3;     //average turnaround time
+			cout << "\n\nAverage Waiting Time = " << avg_wt3;
+			cout << "\nAverage Turnaround Time = " << avg_tat3;
+			system("pause>0");
+			break;
+
+		case 4:
+			system("cls");
+			cout << "ROUND-ROBIN SCHEDULING ALGORITHM\n\n";
+			cout << "Enter Total Process: ";
+			cin >> n4;
+			remain4 = n4;
+			for (count4 = 0;count4<n4;count4++)
+			{
+				cout << "\nProcess %d\n", count4 + 1;
+				cout << "Enter Arrival Time: ";
+				cin >> at4[count4];
+				cout << "Enter Burst Time: ";
+				cin >> bt4[count4];
+				rt4[count4] = bt4[count4];
+			}
+			cout << "\n\nEnter Time Quantum: ";
+			cin >> time_quantum4;
+			cout << "\n\n==============================================";
+			cout << "\n\nProcess\t  Waiting Time  Turnaround Time\n\n";
+			for (time4 = 0, count4 = 0;remain4 != 0;)
+			{
+				if (rt4[count4] <= time_quantum4 && rt4[count4]>0)
+				{
+					time4 += rt4[count4];
+					rt4[count4] = 0;
+					flag4 = 1;
+				}
+				else if (rt4[count4]>0)
+				{
+					rt4[count4] -= time_quantum4;
+					time4 += time_quantum4;
+				}
+				if (rt4[count4] == 0 && flag4 == 1)
+				{
+					remain4--;
+					cout << "P[%d]\t\t%d\t\t%d\n", count4 + 1, time4 - at4[count4] - bt4[count4], time4 - at4[count4];
+					wait_time4 += time4 - at4[count4] - bt4[count4];
+					turnaround_time4 += time4 - at4[count4];
+					flag4 = 0;
+				}
+				if (count4 == n4 - 1)
+					count4 = 0;
+				else if (at4[count4 + 1] <= time4)
+					count4++;
+				else
+					count4 = 0;
+			}
+			cout << "\nAverage Waiting Time : %f\n", wait_time4*1.0 / n4;
+			cout << "Avg Turnaround Time : %f", turnaround_time4*1.0 / n4;
+			system("pause>0");
+			break;
+
+
+		}
+	} while (menu1 != 5);
+
+
+
+
+	system("pause>0");
+}
