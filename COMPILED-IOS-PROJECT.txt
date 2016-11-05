@@ -82,7 +82,7 @@ int main()
 		case 2:
 			system("cls");
 			cout << "SHORTEST JOB FIRST SCHEDULING ALGORITHM\n\n";
-			cout << "Enter Number of 4 Process: ";
+			cout << "Enter 4 Process: ";
 			n2 = 4;
 			cout << endl;
 			for (i2 = 0;i2<n2;i2++)
