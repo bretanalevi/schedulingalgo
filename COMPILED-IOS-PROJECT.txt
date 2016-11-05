@@ -8,8 +8,8 @@ int main()
 	int menu1 = 0; // menu
 	do {
 
-		int n1, bt1[20], at1[20], wt1[20], st1[20], tat1[20], i1, j1;
-		double avwt1 = 0, avtat1 = 0;
+		int n1, bt1[20], at1[20], lat1=0,wt1[20], st1[20], tat1[20], i1, j1,pos1,temp1,p1[20],total1;
+		double avg_wt1 = 0, avg_tat1 = 0;
 
 		int bt2[20], at2[20], lat2=0,p2[20], st2[20], wt2[20], tat2[20], i2, j2, n2, total2 = 0, pos2, temp2;
 		double avg_wt2=0, avg_tat2=0;
@@ -34,47 +34,169 @@ int main()
 		case 1:
 			system("cls");
 			cout << "FIRST COME FIRST SERVE SCHEDULING ALGORITHM\n\n";
-			cout << "Enter Total Number of Processes: ";
-			cin >> n1;
-
+			cout << "Enter 4 Processes ";
+			//cin >> n1;
+			n1 = 4;
+			cout << endl;
+			
 			for (i1 = 0;i1 < n1;i1++)
 			{
 				cout << "\nProcess " << i1 + 1;
-				cout << "\nEnter Arrival Time: ";
+				cout << "\nArrival Time: ";
 				cin >> at1[i1];
-				cout << "Enter Burst Time: ";
+				cout << "Burst Time: ";
 				cin >> bt1[i1];
+				p1[i1] = i1;
+
 			}
+			
+			for (i1 = 0;i1<n1;i1++)    // SORTING ARRIVAL TIME USING SELECTION SORT
+			{
+				pos1 = i1;
+				for (j1 = i1 + 1;j1<n1;j1++)
+				{
+					if (at1[pos1]>at1[j1])
+						pos1 = j1;
+				}
+
+				temp1 = at1[i1];
+				at1[i1] = at1[pos1];
+				at1[pos1] = temp1;
+
+			}
+
+			at1[0] = lat1;
+
+			for (i1 = 0;i1<n1;i1++)  // SORTING ARRIVAL , BURST USING SELECTION SORT
+			{
+				pos1 = i1;
+				for (j1 = i1 + 1;j1<n1;j1++)
+				{
+					if (at1[pos1]>at1[j1])
+						pos1 = j1;
+				}
+
+				temp1 = bt1[i1];
+				bt1[i1] = bt1[pos1];
+				bt1[pos1] = temp1;
+
+				temp1 = p1[i1];
+				p1[i1] = p1[pos1];
+				p1[pos1] = temp1;
+
+				temp1 = at1[i1];
+				at1[i1] = at1[pos1];
+				at1[pos1] = temp1;
+
+				temp1 = st1[i1];
+				st1[i1] = st1[pos1];
+				st1[pos1] = temp1;
+
+			}
+
 
 			//waiting time for first process is 0
 
 			//calculating waiting time
 
-			st1[0] = at1[0];
+			st1[0] = lat1;
 			wt1[0] = 0;
-			for (i1 = 1;i1 < n1;i1++)
+			for (i1 = 1;i1 < n1+1;i1++)
 			{
-				st1[i1] = st1[i1 - 1] + bt1[i1 - 1];
+				st1[i1] = st1[i1-1] + bt1[i1-1];
 				wt1[i1] = st1[i1] - at1[i1];
 
 			}
 
-			cout << "\n================================================";
-			cout << "\nProcess\t    Waiting Time  Turnaround Time";
 
-			//calculating turnaround time
-			for (i1 = 0;i1 < n1;i1++)
+			for (i1 = 0;i1<n1;i1++)
 			{
 				tat1[i1] = bt1[i1] + wt1[i1];
-				avwt1 += wt1[i1];
-				avtat1 += tat1[i1];
-				cout << "\nP" << i1 + 1 << "\t\t" << wt1[i1] << "\t\t" << tat1[i1];
+				avg_wt1 += wt1[i1];
+				avg_tat1 += tat1[i1];
+
 			}
 
-			avwt1 /= i1;
-			avtat1 /= i1;
-			cout << "\n\nAverage Waiting Time: " << avwt1;
-			cout << "\nAverage Turnaround Time: " << avtat1;
+			cout << endl << endl;
+
+			for(i1=0;i1<n1;i1++)    // SHOWING GANT CHART
+			{
+				cout << "-------";
+			}
+			
+			cout << endl;
+			cout << "|";
+			for(i1=0;i1<n1;i1++)
+			{
+				cout << "  P" << p1[i1] << "  |";
+			}
+
+			cout << endl;
+			for(i1=0;i1<n1;i1++)
+			{
+				cout << "-------";
+			}
+			cout << endl;
+			cout << lat1 ;
+			for(i1=1;i1<n1+1;i1++)
+			{
+				cout << "      " << st1[i1];
+			}
+			
+
+			
+			cout << endl << endl;
+			for (i1 = 0;i1<n1;i1++) //SORT AGAIN WITH WAITING TIME AND TURNAROUND TIME
+			{
+				pos1 = i1;
+				for (j1 = i1 + 1;j1<n1;j1++)
+				{
+					if (p1[j1]<p1[pos1])
+						pos1 = j1;
+				}
+
+				temp1 = bt1[i1];
+				bt1[i1] = bt1[pos1];
+				bt1[pos1] = temp1;
+
+				temp1 = p1[i1];
+				p1[i1] = p1[pos1];
+				p1[pos1] = temp1;
+
+				temp1 = at1[i1];
+				at1[i1] = at1[pos1];
+				at1[pos1] = temp1;
+
+				temp1 = wt1[i1];
+				wt1[i1] = wt1[pos1];
+				wt1[pos1] = temp1;
+
+				temp1 = tat1[i1];
+				tat1[i1] = tat1[pos1];
+				tat1[pos1] = temp1;
+
+				temp1 = st1[i1];
+				st1[i1] = st1[pos1];
+				st1[pos1] = temp1;
+			}
+
+			
+
+			//average waiting time
+			total1 = 0;
+
+			
+
+			cout << "\nProcess\t    Arrival Time\t Burst Time \tWaiting Time\tTurnaround Time";
+			for (i1 = 0;i1<n1;i1++)
+			{
+				cout << "\nP[" << p1[i1] << "]\t\t  " << at1[i1] << "\t\t    " << bt1[i1] << "\t\t    " << wt1[i1] << "\t\t\t" << tat1[i1];
+			}
+
+			avg_wt1 /= i1;
+			avg_tat1 /= i1;     //average turnaround time
+			cout << "\n\nAverage Waiting Time = " << avg_wt1;
+			cout << "\nAverage Turnaround Time = " << avg_tat1;
 			system("pause >0");
 			break;
 
@@ -82,7 +204,7 @@ int main()
 		case 2:
 			system("cls");
 			cout << "SHORTEST JOB FIRST SCHEDULING ALGORITHM\n\n";
-			cout << "Enter 4 Process: ";
+			cout << "Enter Number of 4 Process: ";
 			n2 = 4;
 			cout << endl;
 			for (i2 = 0;i2<n2;i2++)
