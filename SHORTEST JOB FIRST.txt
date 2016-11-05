@@ -20,7 +20,7 @@ int main()
 		int wait_time4 = 0, turnaround_time4 = 0, at4[10], bt4[10], rt4[10];
 
 			cout << "SHORTEST JOB FIRST SCHEDULING ALGORITHM\n\n";
-			cout << "Enter Number of 4 Process: ";
+			cout << "Enter 4 Process: ";
 			n2 = 4;
 			cout << endl;
 			for (i2 = 0;i2<n2;i2++)
