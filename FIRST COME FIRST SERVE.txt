@@ -94,10 +94,10 @@ int main()
 
 			}
 
-
+			//calculate turnaround time
 			for (i1 = 0;i1<n1;i1++)
 			{
-				tat1[i1] = bt1[i1] + wt1[i1];
+				tat1[i1] = (bt1[i1] + st1[i1])-at1[i1];
 				avg_wt1 += wt1[i1];
 				avg_tat1 += tat1[i1];
 
