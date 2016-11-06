@@ -1,24 +1,144 @@
 #include<iostream>
 
 using namespace std;
+class sched{
+public:
+    int n4,i4,bt4[10],at4[10],tat4[10],wt4[10],rt4[10],finish4[10],twt4,ttat4,total4;
+    void readData();
+    void computeSRT();
+    void Init();
+    void dispTime();
+    int getNextProcess(int);
+    void computeRR();
+};
+ 
+void sched::readData()
+{
+	n4=4;
+	cout << "SHORTEST REMAINING TIME ALGORITHM " <<endl<<endl;
+    cout<<"Enter 4 Process\n";
+    
+    for(int i4=0;i4<n4;i4++)
+	{
+	cout << "\nProcess " << i4+1;
+	cout<<"\nArrival Time: ";
+	cin>>at4[i4];
+	cout<<"Burst Time: ";
+    cin>>bt4[i4];
+
+	}
+    cout << endl << endl;
+}
+ 
+void sched::Init(){
+    total4=0;
+    twt4=0;
+    ttat4=0;
+    for(int i4=0; i4<n4; i4++){
+        rt4[i4]=bt4[i4];
+        finish4[i4]=0;
+        wt4[i4]=0;
+        tat4[i4]=0;
+        total4+=bt4[i4];
+        }
+}
+ 
+void sched::computeSRT()
+{
+    readData();
+    Init();
+    int time4,next4=0,old4,i4;
+
+    for(time4=0;time4<total4;time4++)
+    {
+        
+		old4=next4;
+        next4=getNextProcess(time4);
+
+        if(old4!=next4 || time4==0)
+		{
+			 cout<<"("<<time4<<")|==P"<<next4+1<<"==|";
+		}
+		
+        rt4[next4]=rt4[next4]-1;
+        if(rt4[next4]==0) finish4[next4]=1;
+		
+        for(i4=0;i4<n4;i4++)
+		{
+            if(i4!=next4 && finish4[i4]==0 && at4[i4]<=time4)
+			{
+				
+				wt4[i4]++;
+
+			}
+			
+		}
+    }
+    cout<<"("<<total4<<")"<<endl;
+	
+
+ 
+    for(i4=0;i4<n4;i4++)
+        if(!finish4[i4]) {cout<<"Scheduling failed, cannot continue\n"; return;}
+ 
+    dispTime();
+ 
+}
+ 
+void sched::dispTime()
+{
+	cout << endl;
+	cout << "\nProcess\t    Arrival Time\tBurst Time\tWaiting Time\tTurnaround Time"<<endl;
+    for(int i4=0;i4<n4;i4++)
+    {
+ 
+        twt4+=wt4[i4];
+        tat4[i4]=wt4[i4]+bt4[i4];
+        ttat4+=tat4[i4];
+        cout << "\nP[" << i4+1 << "]\t\t  " << at4[i4] << "\t\t    " << bt4[i4] << "\t\t    " << wt4[i4] << "\t\t\t" << tat4[i4];
+ 
+    }
+	cout << endl<<endl;
+    cout<<"Average Waiting time = "<<(double)twt4/n4<<endl;
+	cout<<"Average Turnaround time = "<<(double)ttat4/n4<<endl;
+
+}
+ 
+int sched::getNextProcess(int time4){
+ 
+        int i4,low4;
+        for(i4=0;i4<n4;i4++)
+            if(finish4[i4]==0){low4=i4; break; }
+        for(i4=0;i4<n4;i4++)
+            if(finish4[i4]!=1)
+                if(rt4[i4]<rt4[low4] && at4[i4]<=time4)
+                        low4=i4;
+        return low4;
+ 
+}
 
 
 int main()
 {
 	int menu1 = 0; // menu
 	do {
-
-		int n1, bt1[20], at1[20], lat1=0,wt1[20], st1[20], tat1[20], i1, j1,pos1,temp1,p1[20],total1;
+		
+		int n1, bt1[20], at1[20], lat1=0,wt1[20], st1[20], tat1[20], i1, j1,pos1,temp1,p1[20],total1;  //  FCFS
 		double avg_wt1 = 0, avg_tat1 = 0;
 
-		int bt2[20], at2[20], lat2=0,p2[20], st2[20], wt2[20], tat2[20], i2, j2, n2, total2 = 0, pos2, temp2;
+		int bt2[20], at2[20], lat2=0,p2[20], st2[20], wt2[20], tat2[20], i2, j2, n2, total2 = 0, pos2, temp2;  // SJF
 		double avg_wt2=0, avg_tat2=0;
 
-		int bt3[20], p3[20], st3[20], at3[20], wt3[20], tat3[20], pr3[20], i3, j3, n3, total3 = 0, pos3, temp3,lat3=0;
+		int bt3[20], p3[20], st3[20], at3[20], wt3[20], tat3[20], pr3[20], i3, j3, n3, total3 = 0, pos3, temp3,lat3=0;   // PRIORITY (NP)
 		double avg_wt3 = 0, avg_tat3 = 0;
+
+		sched s; 			// SRT
+
 
 		int count4, j4, n4, time4, remain4, flag4 = 0, time_quantum4;
 		int wait_time4 = 0, turnaround_time4 = 0, at4[10], bt4[10], rt4[10];
+
+		
 
 		system("cls");
 		cout << "\n\nSCHEDULING ALGORITHM\n\n";
@@ -365,7 +485,17 @@ int main()
 			system("pause>0");
 			break;
 
+		case 3:
+			system("cls");
+			s.computeSRT();
+			system("pause>0");
+			break;
 
+		case 4:
+		system("cls");
+		
+		system("pause>0");
+		break;
 		case 5:
 			system("cls");
 			cout << "PRIORITY SCHEDULING ALGORITHM ( NON-PREEMPTIVE)\n\n";
@@ -387,11 +517,7 @@ int main()
 				p3[i3] = i3;           //contains process number
 			}
 			
-			
 
-			
-
-			
 
 			for (i3 = 0;i3<n3;i3++)    // GETTING THE SHORTEST ARRIVAL TIME USING SELECTION SORT
 			{
