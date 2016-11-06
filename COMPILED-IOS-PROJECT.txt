@@ -14,18 +14,21 @@ int main()
 		int bt2[20], at2[20], lat2=0,p2[20], st2[20], wt2[20], tat2[20], i2, j2, n2, total2 = 0, pos2, temp2;
 		double avg_wt2=0, avg_tat2=0;
 
-		int bt3[20], p3[20], st3[20], at3[20], wt3[20], tat3[20], pr3[20], i3, j3, n3, total3 = 0, pos3, temp3;
+		int bt3[20], p3[20], st3[20], at3[20], wt3[20], tat3[20], pr3[20], i3, j3, n3, total3 = 0, pos3, temp3,lat3=0;
 		double avg_wt3 = 0, avg_tat3 = 0;
 
 		int count4, j4, n4, time4, remain4, flag4 = 0, time_quantum4;
 		int wait_time4 = 0, turnaround_time4 = 0, at4[10], bt4[10], rt4[10];
+
 		system("cls");
 		cout << "\n\nSCHEDULING ALGORITHM\n\n";
 		cout << " [1]First Come First Served\n";
 		cout << " [2]Shortest Job First\n";
-		cout << " [3]Priority Scheduling\n";
-		cout << " [4]Round Robin Scheduling\n";
-		cout << " [5]Exit\n\n";
+		cout << " [3]Shortest Remaining Time\n";
+		cout << " [4]Priority Scheduling ( PREEMPT )\n";
+		cout << " [5]Priority Scheduling ( NON-PREEMPT )\n";
+		cout << " [6]Round Robin Scheduling\n";
+		cout << " [7]Exit\n\n";
 
 		cout << " Enter Choice : ";
 		cin >> menu1;
@@ -363,7 +366,7 @@ int main()
 			break;
 
 
-		case 3:
+		case 5:
 			system("cls");
 			cout << "PRIORITY SCHEDULING ALGORITHM ( NON-PREEMPTIVE)\n\n";
 			cout << "Enter 4 Process ";
@@ -548,7 +551,7 @@ int main()
 			system("pause>0");
 			break;
 
-		case 4:
+		case 6:
 			system("cls");
 			cout << "ROUND-ROBIN SCHEDULING ALGORITHM\n\n";
 			cout << "Enter Total Process: ";
@@ -602,7 +605,7 @@ int main()
 
 
 		}
-	} while (menu1 != 5);
+	} while (menu1 != 7);
 
 
 
